@@ -91,6 +91,14 @@ export class AuthenticationService {
     let httpParams = new HttpParams();
     httpParams = httpParams.set('username', loginContext.username);
     httpParams = httpParams.set('password', loginContext.password);
+
+    //Updated api to use JSON
+    let userLoginJosn = {
+      username: loginContext.username,
+      password: loginContext.password
+    };
+    console.log(userLoginJosn);
+
     if (environment.oauth.enabled) {
       httpParams = httpParams.set('client_id', 'community-app');
       httpParams = httpParams.set('grant_type', 'password');
@@ -103,7 +111,7 @@ export class AuthenticationService {
           })
         );
     } else {
-      return this.http.post('/authentication', {}, { params: httpParams })
+      return this.http.post('/authentication', userLoginJosn)
         .pipe(
           map((credentials: Credentials) => {
             this.onLoginSuccess(credentials);
